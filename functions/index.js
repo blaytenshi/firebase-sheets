@@ -1,8 +1,22 @@
 const functions = require('firebase-functions');
+const { google } = require('googleapis');
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+exports.helloWorld = functions.https.onRequest(async (request, response) => {
+
+    const auth = new google.auth.GoogleAuth({
+        scopes: [
+            'https://www.googleapis.com/auth/spreadsheets',
+            'https://www.googleapis.com/auth/drive'
+        ]
+    });
+
+    try {
+        const authClient = await auth.getClient();
+        console.log("AUTH CLIENT", authClient);
+    } catch(error) {
+        console.log(error);
+    }
+
+    response.send("Hello from firebase!");
+
+});
